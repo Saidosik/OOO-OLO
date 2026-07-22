@@ -1,16 +1,32 @@
 "use client"
 
 import { api } from "@/config/api"
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import Pusher from "pusher-js"
 
 interface MessageData {
+    username: string;
     message: string
 }
 
 export default function TestPage() {
     const [messages, setMessages] = useState<MessageData[]>([])
-    const [data, setData] = useState("");
+    const [data, setData] = useState<{
+        message: string,
+        username: string
+    }>({
+        message: '',
+        username: ''
+    });
+    const [username, setUsername] = useState('guest');
+
+    useEffect(() => {
+        const localeUsername = localStorage.getItem('username')
+        if (localeUsername) {
+            setData({ ...data, username: localeUsername })
+        }
+
+    }, []);
 
 
     useEffect(() => {
@@ -35,22 +51,28 @@ export default function TestPage() {
             channel.unbind_all() // Безопасное снятие обработчиков с канала
             pusherClient.unsubscribe('chat-channel1')
         }
-    }, [])
+    }, []);
+
+    const typing = (e: ChangeEvent<HTMLInputElement>) => {
+        setData({ ...data, message: e.target.value })
+    }
 
     const send = async () => {
         // Axios / fetch обертка api обычно принимает объект напрямую, 
         // проверьте, не нужно ли убрать вложенность { body: ... } в зависимости от вашей библиотеки api
         await api.post('/send-message', {
-            message: data,
+            data: data,
         })
+
+        setData({ ...data, message:'' })
     }
 
     return (
         <div style={{ padding: '20px' }}>
             <h1>Чат</h1>
 
-            
-            <input type="text" name="ddd" value={data} id="ddd" onChange={(e) => setData(e.target.value)} />
+
+            <input type="text" name="ddd" value={data?.message} id="ddd" onChange={(e) => typing(e)} />
             <button onClick={send}>Отправить</button>
 
             {/* Выводим полученные сообщения, чтобы протестировать работу */}
@@ -58,7 +80,7 @@ export default function TestPage() {
                 <h3>Сообщения:</h3>
                 <ul>
                     {messages.map((msg, index) => (
-                        <li key={index}>{msg.message}</li>
+                        <li key={index}>{msg.username} - {msg.message}</li>
                     ))}
                 </ul>
             </div>

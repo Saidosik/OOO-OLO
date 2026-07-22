@@ -2,9 +2,9 @@ import { pusherServer } from "@/config/pusher-server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const {message } = await request.json().catch(() => null);
-  console.log(message)
-  if (!message ) {
+  const { data } = await request.json().catch(() => null);
+  console.log(data)
+  if (!data) {
     return NextResponse.json(
       { message: 'ОТсутСтвует тело сообщения' }
     )
@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
   else {
     try {
       const result = await pusherServer.trigger("chat-channel1", "new-message", {
-        message: message
+        message: data.message,
+        username: data.username
       });
       console.log(result)
       return NextResponse.json(
