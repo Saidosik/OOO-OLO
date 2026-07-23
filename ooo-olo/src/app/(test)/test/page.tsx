@@ -1,8 +1,9 @@
 "use client"
 
 import { api } from "@/config/api"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import Pusher from "pusher-js"
+import MainLayout from "@/layouts/main";
 
 interface MessageData {
     username: string;
@@ -24,6 +25,7 @@ export default function TestPage() {
         const localeUsername = localStorage.getItem('username')
         if (localeUsername) {
             setData({ ...data, username: localeUsername })
+            setUsername(localeUsername)
         }
 
     }, []);
@@ -57,33 +59,45 @@ export default function TestPage() {
         setData({ ...data, message: e.target.value })
     }
 
-    const send = async () => {
+    const send = async (e: FormEvent) => {
+        e.preventDefault()
         // Axios / fetch обертка api обычно принимает объект напрямую, 
         // проверьте, не нужно ли убрать вложенность { body: ... } в зависимости от вашей библиотеки api
         await api.post('/send-message', {
             data: data,
         })
 
-        setData({ ...data, message:'' })
+        setData({ ...data, message: '' })
     }
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Чат</h1>
+        <MainLayout>
 
 
-            <input type="text" name="ddd" value={data?.message} id="ddd" onChange={(e) => typing(e)} />
-            <button onClick={send}>Отправить</button>
+            <div className="flex flex-col gap-5 items-center justify-center w-full h-full">
+                <h2>Чат {username}</h2>
 
-            {/* Выводим полученные сообщения, чтобы протестировать работу */}
-            <div style={{ marginTop: '20px' }}>
-                <h3>Сообщения:</h3>
-                <ul>
-                    {messages.map((msg, index) => (
-                        <li key={index}>{msg.username} - {msg.message}</li>
-                    ))}
-                </ul>
+
+                {/* Выводим полученные сообщения, чтобы протестировать работу */}
+                <div style={{ marginTop: '20px' }}>
+                    <h3>Сообщения:</h3>
+                    <ul>
+                        {messages.map((msg, index) => (
+                            <li key={index}>{msg.username} - {msg.message}</li>
+                        ))}
+                    </ul>
+                </div>
+                <form onSubmit={send}
+                    className='flex flex-col w-1/2 items-center border-2 border-gray-800 py-5 gap-2'>
+                    <input
+                        type="text" name="ddd"
+                        value={data?.message}
+                        id="ddd"
+                        onChange={(e) => typing(e)}
+                        className="w-60 p-2 border-2 hover:bg-gray-800" />
+                    <button type="submit" className="w-60 p-2 border-2 hover:bg-gray-800">Отправить</button>
+                </form>
             </div>
-        </div>
+        </MainLayout>
     )
 }
