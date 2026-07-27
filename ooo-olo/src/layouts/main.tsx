@@ -26,6 +26,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                         <li className=""><a className="inline" href="/">Главная</a></li>
                         <li className=""><a className="" href="/auth">Войти</a></li>
                         <li className=""><a className="" href="/test">Чаты</a></li>
+                        <li className=""><a className="" href="/olo">АЛОАЛО</a></li>
                     </ul>
                     <a href="/">
                         {username}
