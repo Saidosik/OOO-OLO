@@ -1,4 +1,4 @@
-import { pusherServer } from "@/config/pusher-server";
+import { pusherServer } from "@/lib/pusher-server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

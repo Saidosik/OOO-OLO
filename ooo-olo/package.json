@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "@prisma/client": "^7.9.1",
     "@pusher/push-notifications-server": "^1.2.7",
     "axios": "^1.18.1",
     "body-parser": "^2.3.0",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "next": "^16.2.10",
     "pusher": "^5.3.4",
@@ -29,8 +29,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "prisma": "^7.9.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

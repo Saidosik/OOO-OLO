@@ -1,6 +1,6 @@
 "use client"
 
-import { api } from "@/config/api"
+import { api } from "@/lib/api"
 import { useEffect, useState } from "react"
 import Pusher from "pusher-js"
 import MainLayout from "@/layouts/main";

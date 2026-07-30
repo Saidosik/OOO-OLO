@@ -1,16 +1,30 @@
 "use client"
 
-import { api } from "@/config/api"
+import { api } from "@/lib/api"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import Pusher from "pusher-js"
 import MainLayout from "@/layouts/main";
+import { LoginDTO } from "@/types/login-dto";
 
 interface MessageData {
     username: string;
     message: string
 }
 
+const loginPayload: LoginDTO = {
+    email: 'ss',
+    password: 'password'
+};
+
+// 2. Отправляем этот объект в теле запроса
+
+
+async function ololo() {
+    await api.post('/for-test/login', loginPayload);
+}
+
 export default function TestPage() {
+    ololo();
     const [messages, setMessages] = useState<MessageData[]>([])
     const [data, setData] = useState<{
         message: string,
